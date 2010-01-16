@@ -105,6 +105,20 @@ class Scheduler(object):
         while True:
             self.next_task()
 
+class BearUser(object):
+    def __init__(self, user):
+        self.user = user
+        self.mood = 0
+        self.last_updated = time.time()
+        
+
+    def changeMood(self, mood_change):
+        self.mood += mood_change
+        self.last_updated = time.time()
+
+    def createReply(self, keyword):
+        self.last_updated = time.time()
+        pass
 
 class TwitterBot(object):
     def __init__(self, configFilename):
@@ -124,6 +138,8 @@ class TwitterBot(object):
         self.lastRepliesUpdate = time.gmtime()
         self.lastUpdate = time.gmtime()
 
+        self.bearUserDict = {}
+
     def start_game_to_v21(self):
         self.start_game("v21", "you should really generalize this bit")
     def start_game(self, follower, message):
@@ -137,7 +153,7 @@ class TwitterBot(object):
             return
 
     def check_dms(self):
-        debug("In check_statuses")
+        debug("In check_dms")
         try:
             updates = self.twitter.GetDirectMessages()
         except Exception, e:
@@ -184,12 +200,20 @@ class TwitterBot(object):
 
 
     def handle_dm(self, update):
-        message = "bear is feeling emotional"
-        self.twitter.PostDirectMessage(update.sender_screen_name, message)
+        user = update.sender_screen_name
+
+        if not self.bearUserDict[user]:
+            self.bearUserDict[user] = BearUser(user=self.twitter.GetUser(user=user))
+        message = self.bearUserDict[update.user].createReply(update.text)
+        self.twitter.PostDirectMessage(update.user, message)
 
     def handle_replies(self, update):
+        user = update.sender_screen_name
 
-        message = "bear says hello"
+        if not self.bearUserDict[user]:
+            self.bearUserDict[user] = BearUser(user=self.twitter.GetUser(user=user))
+        message = self.bearUserDict[update.user].createReply(update.text)
+
         self.twitter.PostUpdate(status="@%s %s"%(update.user.screen_name, message), in_reply_to_status_id=update.id)
     
     def run(self):
