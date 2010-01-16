@@ -970,3 +970,9 @@ yay	2
 yays	3
 yearn*	-2
 zest	2
+#Added insults
+nice	2
+foul	-1
+noisome	-1
+whelp	-1
+detest -2

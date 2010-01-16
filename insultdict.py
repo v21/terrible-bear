@@ -2,8 +2,11 @@ import re
 
 def reverse(i):
     return list(i)[::-1]
+
+EMOTION_TABLE="EmotionLookupTable.txt"
+NEGATING_TABLE="NegatingWordList.txt"
         
-NEGATING_WORDS=["not","don't","cannot","can't"]
+NEGATING_WORDS=map(str.strip,open(NEGATING_TABLE,"r"))
 
 class InsultDict():
     def __init__(self):
@@ -55,15 +58,16 @@ class InsultDict():
             
         return basic_rating + magic_rating
 
-dict_filename="EmotionLookupTable.txt"
-insult_dict = InsultDict()
-insult_dict.Load(dict_filename)
+def test():
+    
+    insult_dict = InsultDict()
+    insult_dict.Load(EMOTION_TABLE)
 
-SAMPLES="""
-You vile hideous animal.
-I don't hate you, I detest you.
-I don't like you"""
+    SAMPLES="""
+    You vile hideous animal.
+    I don't hate you, I detest you.
+    I don't like you"""
 
-for sentence in SAMPLES.split("\n")[1:]:
-    print sentence
-    print insult_dict.RateSentence(sentence);
+    for sentence in SAMPLES.split("\n")[1:]:
+        print sentence
+        print insult_dict.RateSentence(sentence);
