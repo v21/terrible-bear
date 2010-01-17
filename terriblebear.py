@@ -40,6 +40,7 @@ import traceback
 import os.path
 import twitter
 from functools import partial
+import random
 
 from twitter import TwitterError
 import re
@@ -203,7 +204,8 @@ class TwitterBot(object):
                 break
         self.lastRepliesUpdate = nextLastUpdate
     def rand_delay(self):
-        return 120
+        
+        return random.randint(10,60*60)
 
     def handle_dm(self, update):
         user = update.sender_screen_name
