@@ -39,6 +39,7 @@ from heapq import heappop, heappush
 import traceback
 import os.path
 import twitter
+from functools import partial
 
 from twitter import TwitterError
 import re
@@ -71,7 +72,7 @@ class SchedTask(object):
 
     def __repr__(self):
         return "<SchedTask %s next:%i delta:%i>" %(
-            self.task.__name__, self.next, self.delta)
+            self.task, self.next, self.delta)
     
     def __cmp__(self, other):
         return cmp(self.next, other.next)
@@ -95,8 +96,16 @@ class Scheduler(object):
             heappush(self.task_heap, task)
         if (wait > 0):
             time.sleep(wait)
-        task()
+        self.wrap_twitter_action(task)
         debug("tasks: " + str(self.task_heap))
+
+
+    def wrap_twitter_action(self, action):
+        try:
+            return action()
+        except Exception, e:
+            print >> sys.stderr, e
+            heappush(self.task_heap, action)
 
     def add_task(self, task):
         heappush(self.task_heap, task)
@@ -107,7 +116,7 @@ class Scheduler(object):
 
 class BearUser(object):
     def __init__(self, user):
-        self.user = user
+        self.user = user.screen_name
         self.mood = 0
         self.last_updated = time.time()
     def __repr__(self):
@@ -120,6 +129,9 @@ class BearUser(object):
     def createReply(self, keyword):
         self.last_updated = time.time()
         print >> sys.stderr , self
+
+        return "hello, i am a bear"
+
 class TwitterBot(object):
     def __init__(self, configFilename):
         self.configFilename = configFilename
@@ -202,25 +214,33 @@ class TwitterBot(object):
             else:
                 break
         self.lastRepliesUpdate = nextLastUpdate
-
+    def rand_delay(self):
+        return 120
 
     def handle_dm(self, update):
         user = update.sender_screen_name
 
         if not user in self.bearUserDict:
             self.bearUserDict[user] = BearUser(user=self.twitter.GetUser(user=user))
-        message = self.bearUserDict[user].createReply(update.text)
-        self.twitter.PostDirectMessage(user, message)
+            self.sched.add_task(SchedTask(partial(self.twitter.CreateFriendship, user), self.rand_delay(), False))
+        
+        bear_user = self.bearUserDict[user]
+        message = bear_user.createReply(update.text)
+        self.sched.add_task(SchedTask(partial(self.twitter.PostDirectMessage, user, message),self.rand_delay(), False ))
 
     def handle_replies(self, update):
         user = update.user.screen_name
 
         if not user in self.bearUserDict:
             self.bearUserDict[user] = BearUser(user=self.twitter.GetUser(user=user))
-        message = self.bearUserDict[update.user].createReply(update.text)
+            self.sched.add_task(SchedTask(partial(self.twitter.CreateFriendship, user), self.rand_delay(), False))
+        
+        bear_user = self.bearUserDict[user]
+        message = bear_user.createReply(update.text)
 
-        self.twitter.PostUpdate(status="@%s %s"%(update.user.screen_name, message), in_reply_to_status_id=update.id)
-    
+        self.sched.add_task(SchedTask(partial(self.twitter.PostUpdate, status="@%s %s"%(update.user.screen_name, message), in_reply_to_status_id=update.id), self.rand_delay(), False))
+
+
     def run(self):
         while True:
             try:
