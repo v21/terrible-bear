@@ -210,8 +210,8 @@ class TwitterBot(object):
                     .encode('utf-8', 'replace'))
                 debug("got dm: %s created at %s (last updated at %s)" %(update.text, crt, self.lastDMsUpdate))
                 self.handle_dm(update)
-
                 nextLastUpdate = crt
+
             else:
                 break
         self.lastDMsUpdate = nextLastUpdate
@@ -233,9 +233,9 @@ class TwitterBot(object):
                     update.text.replace('\n', ' '))
                     .encode('utf-8', 'replace'))
                 debug("got reply: %s" %(update.text))
+                nextLastUpdate = crt
                 self.handle_replies(update)
 
-                nextLastUpdate = crt
             else:
                 break
         self.lastRepliesUpdate = nextLastUpdate
