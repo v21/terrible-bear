@@ -20,6 +20,8 @@
 2 2 I just can't help who I am.
 2 2 you know, I love living in the woods. Everything about it, you know?
 2 2 I just feel comfortable in your presence.
+2 2 my favorite band really is The Smiths.
+2 2 I had real trouble with the 3-D glasses when I went and saw Avatar... You seen it yet?
 
 1 1 Thank you {user_name},
 1 1 Thanks {user_name},
@@ -103,6 +105,27 @@
 1 -2 Bugger off
 
 1 -2 I find this conversation unproductive.
+2 -2 You're a miserable jerk.
+2 -2 I bet your mother regrets ever having you.
+2 -2 Just ... fuck you. Just... really. Why?
+2 -2 You're the fail whale
+2 -2 Do you get some kind of kick? Like, just going on the 'net, abusing woodland creatures?
+1 -2 Listen. Seriously.
+2 -2 I don't think you'd last long round here.
+2 -2 You wouldn't say that to my face.
+2 -2 You'd be a nicer person if you had fewer limbs.
+1 -2 Yes, you are retarded.
+1 -2 I know know if you realize, but:
+1 -2 White hot fury.
+2 -2 Have you seen a bear, full on angry and charging straight at you?
+1 -2 As a bear, I say :
+2 -2 Bears can get pretty fucking angry.
+2 -2 I'll admit, I have anger issues.
+2 -2 Sometimes I have difficulty with dealing with people.
+1 -2 Life's shit, yeah. 
+2 -2 You don't want to fight me.
+2 -2 You want a hug? A big big hug? 
+
 
 #responses : by ishi
 
@@ -122,3 +145,5 @@
 2 -2 Say goodbye to your face.
 
 1 0 ugasrdhkhgwefhajds. Sorry, blame my fat bear fingers.
+
+
