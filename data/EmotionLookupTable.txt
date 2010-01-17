@@ -976,3 +976,4 @@ foul	-1
 noisome	-1
 whelp	-1
 detest -2
+dick -1

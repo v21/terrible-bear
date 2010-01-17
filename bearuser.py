@@ -22,7 +22,7 @@ class ResponseDict():
                 pass
             
     def getResponse(self,mood):
-        response_list = self.responses[int(mood)]
+        response_list = self.responses[int(round(mood))]
         return response_list[random.randint(0,len(response_list))]
     
             
@@ -47,5 +47,5 @@ class BearUser(object):
     def createReply(self, sentence):
         self.last_updated = time.time()
         rating = insultdict.INSULT_DICT.rateSentence(sentence)
-        self.changeMood(rating/4.0)
+        self.changeMood(rating/8.0)
         return RESPONSES.getResponse(self.mood)

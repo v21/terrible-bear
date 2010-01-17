@@ -64,9 +64,10 @@ INSULT_DICT.load(EMOTION_TABLE)
 def test():
     SAMPLES="""
     You vile hideous animal.
+    I hate you, you are a terrible bear.
     I don't hate you, I detest you.
     I don't like you"""
 
     for sentence in SAMPLES.split("\n")[1:]:
         print sentence
-        print INSULT_DICT.RateSentence(sentence);
+        print INSULT_DICT.rateSentence(sentence);
