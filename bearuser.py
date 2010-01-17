@@ -23,7 +23,7 @@ class ResponseDict():
             
     def getResponse(self,mood):
         response_list = self.responses[int(round(mood))]
-        return response_list[random.randint(0,len(response_list))]
+        return response_list[random.randint(0,len(response_list)-1)]
     
             
     
@@ -48,5 +48,6 @@ class BearUser(object):
         self.last_updated = time.time()
         rating = insultdict.INSULT_DICT.rateSentence(sentence)
         self.changeMood(rating/8.0)
+        print self.mood
         return RESPONSES.getResponse(self.mood)
         print >> sys.stderr , self
