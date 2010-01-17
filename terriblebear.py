@@ -248,7 +248,7 @@ class TwitterBot(object):
             self.sched.add_task(SchedTask(partial(self.twitter.CreateFriendship, user), self.rand_delay(), False))
         
         bear_user = self.bearUserDict[user]
-        message = bear_user.createReply(update.text,{bear_user: bear_user, update:update})
+        message = bear_user.createReply(update.text,{'bear_user': bear_user, 'update':update})
         self.sched.add_task(SchedTask(partial(self.twitter.PostDirectMessage, user, message),self.rand_delay(), False ))
 
     def handle_replies(self, update):
@@ -259,7 +259,7 @@ class TwitterBot(object):
             self.sched.add_task(SchedTask(partial(self.twitter.CreateFriendship, user), 30, False))
         
         bear_user = self.bearUserDict[user]
-        message = bear_user.createReply(update.text,{bear_user: bear_user, update:update})
+        message = bear_user.createReply(update.text,{'bear_user': bear_user, 'update':update})
 
         self.sched.add_task(SchedTask(partial(self.twitter.PostUpdate, status="@%s %s"%(update.user.screen_name, message), in_reply_to_status_id=update.id), self.rand_delay(), False))
 
