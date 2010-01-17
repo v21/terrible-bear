@@ -57,12 +57,11 @@ class InsultDict():
             magic_rating = -3
             
         return basic_rating + magic_rating
+        
+INSULT_DICT = InsultDict()
+INSULT_DICT.load(EMOTION_TABLE)
 
 def test():
-    
-    insult_dict = InsultDict()
-    insult_dict.load(EMOTION_TABLE)
-
     SAMPLES="""
     You vile hideous animal.
     I don't hate you, I detest you.
@@ -70,4 +69,4 @@ def test():
 
     for sentence in SAMPLES.split("\n")[1:]:
         print sentence
-        print insult_dict.RateSentence(sentence);
+        print INSULT_DICT.RateSentence(sentence);
