@@ -277,9 +277,11 @@ class TwitterBot(object):
     def check_mood(self):
         current_mood_float = self.get_current_mood()
         current_mood = int(round(current_mood_float))
-        if current_mood > 0: current_mood = 0
-        if current_mood < -2: current_mood = 0
+        if current_mood > 2: current_mood = 2
+        if current_mood < -2: current_mood = -2
         imgs = {
+            2: "images/creepybear.jpg"
+            1: "images/happybear.jpg",
             0: "images/bearangst.jpg",
             -1: "images/sadbear.jpg",
             -2: "images/angrybear.jpg",
