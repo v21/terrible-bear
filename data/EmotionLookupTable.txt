@@ -824,7 +824,7 @@ tender*	3
 tense*	-3
 tensing	-3
 tension*	-3
-terribl*	-4
+terrible	-4
 terrific*	4
 terrified	-4
 terrifies	-4
