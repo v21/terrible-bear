@@ -27,7 +27,6 @@ class ResponseDict():
                 pass
             
     def formatString(self,s,details):
-        print details
         inserts = {
             'user_name': details["bear_user"].user.name
         }
