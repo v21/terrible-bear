@@ -3,8 +3,8 @@ import re
 def reverse(i):
     return list(i)[::-1]
 
-EMOTION_TABLE="EmotionLookupTable.txt"
-NEGATING_TABLE="NegatingWordList.txt"
+EMOTION_TABLE="data/EmotionLookupTable.txt"
+NEGATING_TABLE="data/NegatingWordList.txt"
         
 NEGATING_WORDS=map(str.strip,open(NEGATING_TABLE,"r"))
 

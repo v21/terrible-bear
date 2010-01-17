@@ -120,6 +120,7 @@ class BearUser(object):
     def createReply(self, keyword):
         self.last_updated = time.time()
         print >> sys.stderr , self
+        
 class TwitterBot(object):
     def __init__(self, configFilename):
         self.configFilename = configFilename
