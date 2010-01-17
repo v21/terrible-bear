@@ -132,6 +132,8 @@ class BearUser(object):
         print >> sys.stderr , self
 
         return "hello, i am a bear"
+        
+    
 class TwitterBot(object):
     def __init__(self, configFilename):
         self.configFilename = configFilename
@@ -142,9 +144,12 @@ class TwitterBot(object):
 
         self.sched = Scheduler(
            #(SchedTask(self.process_events, 1),
-           (SchedTask(self.check_dms, 120, True),
-           SchedTask(self.start_game_to_v21, 30, False),
-            SchedTask(self.check_replies, 30, True)))
+           (
+            SchedTask(self.check_dms, 120, True),
+            SchedTask(self.start_game_to_v21, 30, False),
+            SchedTask(self.check_replies, 30, True)),
+            SchedTask(self.check_mood, 600, True)),
+            )
            #  SchedTask(self.stay_joined, 120)))
         self.lastDMsUpdate = time.gmtime()
         self.lastRepliesUpdate = time.gmtime()
@@ -168,6 +173,7 @@ class TwitterBot(object):
             print >> sys.stderr, "Exception while querying twitter:"
             traceback.print_exc(file=sys.stderr)
             return
+            
 
     def check_dms(self):
         debug("In check_dms")
@@ -240,6 +246,22 @@ class TwitterBot(object):
 
         self.sched.add_task(SchedTask(partial(self.twitter.PostUpdate, status="@%s %s"%(update.user.screen_name, message), in_reply_to_status_id=update.id), self.rand_delay(), False))
 
+    def get_current_mood(self):
+        moods = [bear_user.mood for bear_user in self.bearUserDict.values()]
+        return sum(moods)/len(moods)
+        
+    def check_mood(self):
+        current_mood = self.get_current_mood()
+        current_mood = int(round(current_mood))
+        if current_mood > 0: current_mood = 0
+        if current_mood < -2: current_mood = 0
+        imgs = {
+            0: "http://personal.boristhebrave.com/permanent/10/bearangst.jpg"
+            -1: "http://personal.boristhebrave.com/permanent/10/sadbear.jpg"
+            -2: "http://personal.boristhebrave.com/permanent/10/angrybear.jpg"
+        }
+        img = imgs[current_mood]
+        #TODO
 
     def run(self):
         while True:
@@ -288,4 +310,5 @@ def main():
     bot = TwitterBot(configFilename)
     return bot.run()
 
-main()
+if __name__ == "__main__":
+    main()
