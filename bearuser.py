@@ -6,25 +6,46 @@ import random
 
 RESPONSES_TABLE="data/responses.txt"
 
+def one_of(l):
+    l = list(l)
+    return l[random.randint(0,len(l)-1)]
+
 class ResponseDict():
     def __init__(self):
-        self.responses={}
+        self.responsesByPrefixByMood={}
     def load(self,filename):
         for line in open(filename,'r'):
             try:
-                match = re.search(r"\s+",line)
+                match = re.search(r"([\d-]*)\s+([\d-]*)\s+(.*)",line)
                 if match is None: continue
-                mood = int(line[:match.start()])
-                text = line[match.end():].strip()
-                response_list = self.responses.setdefault(mood,[])
+                position = int(match.group(1))
+                mood = int(match.group(2))
+                text = match.group(3).strip()
+                response_list = self.responsesByPrefixByMood.setdefault(position,{}).setdefault(mood,[])
                 response_list.append(text)
             except(ValueError,IndexError):
                 pass
             
+<<<<<<< HEAD:bearuser.py
     def getResponse(self,mood):
         response_list = self.responses[int(round(mood))]
         return response_list[random.randint(0,len(response_list)-1)]
     
+=======
+    def formatString(self,s,details):
+        inserts = {
+            'user_name': details["bear_user"].user.name
+        }
+        def do_replace(match):
+            return inserts.get(match.group(1),match.group(0))
+            
+        return re.sub(r"{([^}]*)}",do_replace,s)
+            
+    def getResponse(self,mood,details):
+        response_list1 = self.responsesByPrefixByMood[1][int(round(mood))]
+        response_list2 = self.responsesByPrefixByMood[2][int(round(mood))]
+        return " ".join([self.formatString(one_of(l),details) for l in [response_list1,response_list2]])
+>>>>>>> b71208f56e1e6acde608fc6701d33a3b9e37b6cf:bearuser.py
             
     
 RESPONSES = ResponseDict()
@@ -44,9 +65,21 @@ class BearUser(object):
         if self.mood<-2: self.mood = -2
         self.last_updated = time.time()
 
-    def createReply(self, sentence):
+    def createReply(self, sentence, details):
         self.last_updated = time.time()
         rating = insultdict.INSULT_DICT.rateSentence(sentence)
         self.changeMood(rating/8.0)
+<<<<<<< HEAD:bearuser.py
         return RESPONSES.getResponse(self.mood)
         print >> sys.stderr , self
+=======
+        print self.mood
+        return RESPONSES.getResponse(self.mood, details)
+
+def test():
+    class User():
+        def __init__(self):
+            self.name="asdf"
+    b = BearUser(User())
+    print RESPONSES.getResponse(0,{'bear_user':b})
+>>>>>>> b71208f56e1e6acde608fc6701d33a3b9e37b6cf:bearuser.py
