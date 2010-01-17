@@ -11,7 +11,7 @@
 1 1 Nice of you to say so
 1 1 Aww, that's so sweet
 
-1 1 that means a lot to me.
+2 1 that means a lot to me.
 2 1 you're a good friend.
 2 1 I'm glad you took the time to talk to me.
 2 1 that makes me feel slightly better about life.
@@ -45,3 +45,9 @@
 2 -1 one more word and I'll stuff your mouth full of charmin.
 2 -1 you know if I was to scratch your face off, you'd probably look better.
 2 -1 you're just a glorified meal on legs.
+
+1 -2 ...
+2 -2 
+
+1 2 I'm so happy I don't know what to say.
+2 2 
