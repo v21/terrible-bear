@@ -45,6 +45,7 @@ import pickle
 from twitter import TwitterError
 import re
 from htmlentitydefs import name2codepoint
+import subprocess
 
 from bearuser import BearUser
 
@@ -146,7 +147,8 @@ class TwitterBot(object):
         self.lastRepliesUpdate = time.gmtime()
         self.lastUpdate = time.gmtime()
         
-        self.user = self.twitter.GetUser(user="terriblebear")
+        self.username = "terriblebear"
+        self.user = self.twitter.GetUser(user=self.username)
 
         self.bearUserDict = {}
 
@@ -263,11 +265,21 @@ class TwitterBot(object):
         if current_mood > 0: current_mood = 0
         if current_mood < -2: current_mood = 0
         imgs = {
-            0: "http://personal.boristhebrave.com/permanent/10/bearangst.jpg",
-            -1: "http://personal.boristhebrave.com/permanent/10/sadbear.jpg",
-            -2: "http://personal.boristhebrave.com/permanent/10/angrybear.jpg",
+            0: "images/bearangst.jpg",
+            -1: "images/sadbear.jpg",
+            -2: "images/angrybear.jpg",
         }
         img = imgs[current_mood]
+        
+        # Cannot be bothered to figure out how to do this inside python..
+        subprocess.call([
+            "curl",
+            "-u",
+            self.username+":"+self.config.get('twitter', 'password'),
+            "-H","Expect:",
+            "-F","image=@"+img+";type=image/png",
+            "http://twitter.com/account/update_profile_image.xml"])
+        
         self.user.SetProfileImageUrl(img)
         return img
 
