@@ -45,6 +45,8 @@ from twitter import TwitterError
 import re
 from htmlentitydefs import name2codepoint
 
+from bearuser import BearUser
+
 
 
 
@@ -113,7 +115,6 @@ class Scheduler(object):
     def run_forever(self):
         while True:
             self.next_task()
-
 class BearUser(object):
     def __init__(self, user):
         self.user = user.screen_name
@@ -131,7 +132,6 @@ class BearUser(object):
         print >> sys.stderr , self
 
         return "hello, i am a bear"
-
 class TwitterBot(object):
     def __init__(self, configFilename):
         self.configFilename = configFilename

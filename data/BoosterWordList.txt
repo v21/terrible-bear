@@ -1,0 +1,13 @@
+absolutely	1
+definitely	1
+extremely	2
+fuckin	2
+fucking	2
+hugely	2
+incredibly	2
+just	-1
+overwhelmingly	2
+so	0	Was 1 but sometimes used as neutral or mild term
+some	-1
+sum	-1
+very	1
