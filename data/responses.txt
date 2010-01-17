@@ -62,3 +62,18 @@
 
 2 -2 I'm telling my therapist about you.
 1 -2 Bugger off
+
+#From Ishi
+2 2 Come and fondle my soft fur.
+
+1 1 That's nice of you.
+2 1 Do go on.
+
+1 0 *yawn*
+2 0 Fish are tasty.
+
+1 -1 Don't be so unkind.
+2 -1 Bad childhood memories are returning.
+
+1 -2 You have cut to the core of me.
+2 -2 Say goodbye to your face.
