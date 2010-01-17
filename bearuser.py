@@ -58,4 +58,3 @@ class BearUser(object):
         self.changeMood(rating/8.0)
         print self.mood
         return RESPONSES.getResponse(self.mood, details)
-        print >> sys.stderr , self
