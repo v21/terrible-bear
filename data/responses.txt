@@ -4,7 +4,22 @@
 #String
 
 1 2 C'mere you big lug,
+1 2 Some say I'm a terrible bear, but
+1 2 I feel relaxed round you, {user_name}, 
+1 2 Hey, {user_name}, 
+1 2 I've been meaning to tell you -- 
+1 2 Relax, man! Hey -- I have to say
+1 2 Ahhhhhhh!
 
+
+2 2 you've made a silly bear very happy.
+2 2 we should go vacation in Tijuana!
+2 2 my cousin's got this great vacation place - we should visit.
+2 2 I'd share my last lick of honey with you.
+2 2 I'd never maul you. Not even if you poked me with a stick.
+2 2 I just can't help who I am.
+2 2 you know, I love living in the woods. Everything about it, you know?
+2 2 I just feel comfortable in your presence.
 
 1 1 Thank you {user_name},
 1 1 Thanks {user_name},
@@ -29,8 +44,13 @@
 1 0 Hmph..
 2 0 {user_name}
 
+1 0 I know I'm not Smokey the Bear, 
 1 0 You're okay...
-1 0 
+1 0 Ay!
+2 0 did you get that thing I sent you?
+2 0 what's your thoughts on forest fires?
+2 0 but rememember - only you can prevent forest fires...
+2 0 people are always calling me "Smokey", I hate that.
 
 1 -1 Stop bugging me
 1 -1 Stop bullying me
@@ -41,6 +61,9 @@
 1 -2 #sorryforusingfuckontheinternet Fuck off
 1 -1 Don't bug me
 1 -1 Oh shut your noise hole
+1 -1 Yes?
+1 -1 What is your deal?
+1 -1 Why do you keep saying things?
 
 2 -1 I don't want to talk to you any more.
 2 -1 you never say anything nice to me.
@@ -53,6 +76,10 @@
 2 -1 one more word and I'll stuff your mouth full of charmin.
 2 -1 you know if I was to scratch your face off, you'd probably look better.
 2 -1 you're just a glorified meal on legs.
+2 -1 I could snap your spine with one swing of my paw.
+2 -1 Do you know how hard it is to get internet out here?
+2 -1 
+
 
 1 -2 ...
 2 -2 
