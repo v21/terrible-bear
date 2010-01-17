@@ -3,13 +3,18 @@
 #Emotional level
 #String
 
-1 1 Thank you
-1 1 Thanks
-1 1 Cheers
-1 1 You're too kind
-1 1 Thanks for the kind words
-1 1 Nice of you to say so
-1 1 Aww, that's so sweet
+1 2 C'mere you big lug,
+
+
+1 1 Thank you {user_name},
+1 1 Thanks {user_name},
+1 1 Cheers {user_name},
+1 1 You're too kind {user_name},
+1 1 Thanks for the kind words {user_name},
+1 1 Nice of you to say so {user_name},
+1 1 Aww, that's so sweet {user_name},
+1 1 {user_name}, you know,
+
 
 2 1 that means a lot to me.
 2 1 you're a good friend.
@@ -23,6 +28,9 @@
 
 1 0 Hmph..
 2 0 {user_name}
+
+1 0 You're okay...
+1 0 
 
 1 -1 Stop bugging me
 1 -1 Stop bullying me
