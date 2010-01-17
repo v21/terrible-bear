@@ -146,7 +146,7 @@ class TwitterBot(object):
         self.lastRepliesUpdate = time.gmtime()
         self.lastUpdate = time.gmtime()
         
-        self.user = self.twitter.GetUser(user=self.config.get('twitter', 'email'))
+        self.user = self.twitter.GetUser(user="terriblebear")
 
         self.bearUserDict = {}
 
@@ -268,7 +268,7 @@ class TwitterBot(object):
             -2: "http://personal.boristhebrave.com/permanent/10/angrybear.jpg",
         }
         img = imgs[current_mood]
-        #self.user.SetProfileImageUrl(img)
+        self.user.SetProfileImageUrl(img)
         return img
 
     def run(self):
