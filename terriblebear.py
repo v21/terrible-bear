@@ -40,6 +40,7 @@ import traceback
 import os.path
 import twitter
 from functools import partial
+import random
 
 from twitter import TwitterError
 import re
@@ -89,15 +90,16 @@ class Scheduler(object):
             heappush(self.task_heap, task)
     
     def next_task(self):
-        debug("next_task")
         now = time.time()
         task = heappop(self.task_heap)
         wait = task.next - now
         task.next = now + task.delta
         if task.repeat:
+            debug("repeating")
             heappush(self.task_heap, task)
         if (wait > 0):
             time.sleep(wait)
+        debug("doing " +str (task))
         self.wrap_twitter_action(task)
         debug("tasks: " + str(self.task_heap))
 
@@ -107,6 +109,7 @@ class Scheduler(object):
             return action()
         except Exception, e:
             print >> sys.stderr, e
+            action.repeat = False
             heappush(self.task_heap, action)
 
     def add_task(self, task):
@@ -115,23 +118,7 @@ class Scheduler(object):
     def run_forever(self):
         while True:
             self.next_task()
-class BearUser(object):
-    def __init__(self, user):
-        self.user = user.screen_name
-        self.mood = 0
-        self.last_updated = time.time()
-    def __repr__(self):
-        return "user %s has made bear have mood %d - last talked at %s" %(self.user, self.mood, self.last_updated)
 
-    def changeMood(self, mood_change):
-        self.mood += mood_change
-        self.last_updated = time.time()
-
-    def createReply(self, keyword):
-        self.last_updated = time.time()
-        print >> sys.stderr , self
-
-        return "hello, i am a bear"
 class TwitterBot(object):
     def __init__(self, configFilename):
         self.configFilename = configFilename
@@ -143,7 +130,7 @@ class TwitterBot(object):
         self.sched = Scheduler(
            #(SchedTask(self.process_events, 1),
            (SchedTask(self.check_dms, 120, True),
-           SchedTask(self.start_game_to_v21, 30, False),
+           #SchedTask(self.start_game_to_v21, 30, False),
             SchedTask(self.check_replies, 30, True)))
            #  SchedTask(self.stay_joined, 120)))
         self.lastDMsUpdate = time.gmtime()
@@ -181,10 +168,11 @@ class TwitterBot(object):
         nextLastUpdate = self.lastDMsUpdate
         for update in updates:
             crt = parse(update.created_at).utctimetuple()
-            if (crt > self.lastUpdate):
+            if (crt > self.lastDMsUpdate):
                 text = (htmlentitydecode(
                     update.text.replace('\n', ' '))
                     .encode('utf-8', 'replace'))
+                debug("got dm: %s " %(update.text))
                 self.handle_dm(update)
 
                 nextLastUpdate = crt
@@ -204,10 +192,11 @@ class TwitterBot(object):
         nextLastUpdate = self.lastRepliesUpdate
         for update in updates:
             crt = parse(update.created_at).utctimetuple()
-            if (crt > self.lastUpdate):
+            if (crt > self.lastRepliesUpdate):
                 text = (htmlentitydecode(
                     update.text.replace('\n', ' '))
                     .encode('utf-8', 'replace'))
+                debug("got reply: %s" %(update.text))
                 self.handle_replies(update)
 
                 nextLastUpdate = crt
@@ -215,7 +204,8 @@ class TwitterBot(object):
                 break
         self.lastRepliesUpdate = nextLastUpdate
     def rand_delay(self):
-        return 120
+        
+        return random.randint(10,60*60)
 
     def handle_dm(self, update):
         user = update.sender_screen_name
