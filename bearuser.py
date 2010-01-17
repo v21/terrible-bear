@@ -49,4 +49,3 @@ class BearUser(object):
         rating = insultdict.INSULT_DICT.rateSentence(sentence)
         self.changeMood(rating/4.0)
         return RESPONSES.getResponse(self.mood)
-        print >> sys.stderr , self
