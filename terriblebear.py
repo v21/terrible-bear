@@ -152,13 +152,15 @@ class TwitterBot(object):
         self.username = "terriblebear"
         self.user = self.twitter.GetUser(user=self.username)
 
+        f = None
         try:
             f = file("bearuserdict.pickle")
             self.bearUserDict = load(f)
         except: 
             self.bearUserDict = {}
         finally:
-            f.close()
+            if f is not None:
+                f.close()
 
 
     def start_game_to_v21(self):
@@ -178,6 +180,7 @@ class TwitterBot(object):
             traceback.print_exc(file=sys.stderr)
             return
     def pickle_users(self):     
+        f = None
         try:
             debug("DUMPING USER DICT")
             f = open('bearuserdict.pickle', 'w')
@@ -186,7 +189,8 @@ class TwitterBot(object):
         except :
             pass
         finally:
-            f.close()
+            if f is not None:
+                f.close()
 
     def check_dms(self):
         debug("In check_dms")
