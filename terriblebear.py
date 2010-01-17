@@ -45,7 +45,7 @@ import pickle
 from twitter import TwitterError
 import re
 from htmlentitydefs import name2codepoint
-
+import urllib2
 from bearuser import BearUser
 
 
@@ -137,15 +137,22 @@ class TwitterBot(object):
            (
             SchedTask(self.check_dms, 120, True),
             #SchedTask(self.start_game_to_v21, 30, False),
-            SchedTask(self.check_replies, 30, True)),
-            SchedTask(self.check_mood, 600, True)),
-            )
+            SchedTask(self.check_replies, 30, True),
+            #SchedTask(self.check_mood, 600, True),
+            ))
            #  SchedTask(self.stay_joined, 120)))
         self.lastDMsUpdate = time.gmtime()
         self.lastRepliesUpdate = time.gmtime()
         self.lastUpdate = time.gmtime()
 
-        self.bearUserDict = {}
+        try:
+            f = file("bearuserdict.pickle")
+            self.bearUserDict = load(f)
+        except: 
+            self.bearUserDict = {}
+        finally:
+            f.close()
+
 
     def start_game_to_v21(self):
         self.start_game("v21", "you should really generalize this bit")
@@ -259,9 +266,9 @@ class TwitterBot(object):
         if current_mood > 0: current_mood = 0
         if current_mood < -2: current_mood = 0
         imgs = {
-            0: "http://personal.boristhebrave.com/permanent/10/bearangst.jpg"
-            -1: "http://personal.boristhebrave.com/permanent/10/sadbear.jpg"
-            -2: "http://personal.boristhebrave.com/permanent/10/angrybear.jpg"
+            0: "http://personal.boristhebrave.com/permanent/10/bearangst.jpg",
+            -1: "http://personal.boristhebrave.com/permanent/10/sadbear.jpg",
+            -2: "http://personal.boristhebrave.com/permanent/10/angrybear.jpg",
         }
         img = imgs[current_mood]
         #TODO
