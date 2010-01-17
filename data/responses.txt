@@ -70,7 +70,7 @@
 2 -1 you're just a big fat meanie!
 2 -1 you're a horrible mean-face!
 2 -1 I'm far too unhappy to deal with you now.
-2 -1 the last time someone tried to annoy me they ended up in a coma.
+2 -2 the last time someone tried to annoy me they ended up in a coma.
 2 -1 you're un-bear-able.
 2 -1 I'm hungry and you look like you'd make a good snack.
 2 -1 one more word and I'll stuff your mouth full of charmin.
@@ -78,11 +78,13 @@
 2 -1 you're just a glorified meal on legs.
 2 -1 I could snap your spine with one swing of my paw.
 2 -1 Do you know how hard it is to get internet out here?
-2 -1 
 
 
 1 -2 ...
-2 -2 
+2 -2 You wanna make something of this? 
 
 1 2 I'm so happy I don't know what to say.
 2 2 
+
+2 -2 I'm telling my therapist about you.
+1 -2 Bugger off

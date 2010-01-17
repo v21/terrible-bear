@@ -33,11 +33,24 @@ class ResponseDict():
         def do_replace(match):
             return inserts.get(match.group(1),match.group(0))
         return re.sub(r"{([^}]*)}",do_replace,s)
-            
-    def getResponse(self,mood,details):
+        
+    def getResponseUnlimited(self, mood, details):
         response_list1 = self.responsesByPrefixByMood[1][int(round(mood))]
         response_list2 = self.responsesByPrefixByMood[2][int(round(mood))]
         return " ".join([self.formatString(one_of(l),details) for l in [response_list1,response_list2]])
+            
+    def getResponse(self,mood,details):
+        n =0
+        response=None
+        found  = False
+        while n < 50:
+            response = self.getResponseUnlimited(mood,details)
+            if len(response)<=130:
+                found = True
+                break
+        if not found:
+            response = "I am literally too stunned for words."
+        return response
             
     
 RESPONSES = ResponseDict()
@@ -66,6 +79,6 @@ class BearUser(object):
 def test():
     class User():
         def __init__(self):
-            self.name="asdf"
+            self.name="<Your User Name here>"+('a'*50)
     b = BearUser(User())
-    print RESPONSES.getResponse(0,{'bear_user':b})
+    print RESPONSES.getResponse(1,{'bear_user':b})
