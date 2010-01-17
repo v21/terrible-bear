@@ -161,6 +161,8 @@ class TwitterBot(object):
         finally:
             if f is not None:
                 f.close()
+                
+        self.last_mood = self.get_current_mood()
 
 
     def start_game_to_v21(self):
@@ -273,8 +275,8 @@ class TwitterBot(object):
         return sum(moods)/len(moods)
         
     def check_mood(self):
-        current_mood = self.get_current_mood()
-        current_mood = int(round(current_mood))
+        current_mood_float = self.get_current_mood()
+        current_mood = int(round(current_mood_float))
         if current_mood > 0: current_mood = 0
         if current_mood < -2: current_mood = 0
         imgs = {
@@ -294,6 +296,20 @@ class TwitterBot(object):
             "http://twitter.com/account/update_profile_image.xml"])
         
         self.user.SetProfileImageUrl(img)
+        
+        if int(round(self.last_mood)) != current_mood:
+            improvement = int(round(self.last_mood)) < current_mood
+            text = "I'm feeling "
+            if improvement:
+                text += "better"
+            else: text+="worse"
+            text += " about myself now."
+            try:
+                self.twitter.PostUpdate(text)
+            except Exception, e:
+                pass
+            
+        self.last_mood = current_mood_float
         return img
 
     def run(self):
