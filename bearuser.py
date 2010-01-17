@@ -26,6 +26,12 @@ class ResponseDict():
             except(ValueError,IndexError):
                 pass
             
+<<<<<<< HEAD:bearuser.py
+    def getResponse(self,mood):
+        response_list = self.responses[int(round(mood))]
+        return response_list[random.randint(0,len(response_list)-1)]
+    
+=======
     def formatString(self,s,details):
         inserts = {
             'user_name': details["bear_user"].user.name
@@ -39,6 +45,7 @@ class ResponseDict():
         response_list1 = self.responsesByPrefixByMood[1][int(round(mood))]
         response_list2 = self.responsesByPrefixByMood[2][int(round(mood))]
         return " ".join([self.formatString(one_of(l),details) for l in [response_list1,response_list2]])
+>>>>>>> b71208f56e1e6acde608fc6701d33a3b9e37b6cf:bearuser.py
             
     
 RESPONSES = ResponseDict()
@@ -62,6 +69,10 @@ class BearUser(object):
         self.last_updated = time.time()
         rating = insultdict.INSULT_DICT.rateSentence(sentence)
         self.changeMood(rating/8.0)
+<<<<<<< HEAD:bearuser.py
+        return RESPONSES.getResponse(self.mood)
+        print >> sys.stderr , self
+=======
         print self.mood
         return RESPONSES.getResponse(self.mood, details)
 
@@ -71,3 +82,4 @@ def test():
             self.name="asdf"
     b = BearUser(User())
     print RESPONSES.getResponse(0,{'bear_user':b})
+>>>>>>> b71208f56e1e6acde608fc6701d33a3b9e37b6cf:bearuser.py
