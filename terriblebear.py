@@ -242,7 +242,7 @@ class TwitterBot(object):
             self.sched.add_task(SchedTask(partial(self.twitter.CreateFriendship, user), self.rand_delay(), False))
         
         bear_user = self.bearUserDict[user]
-        message = bear_user.createReply(update.text)
+        message = bear_user.createReply(update.text,{user: bear_user, update:update})
 
         self.sched.add_task(SchedTask(partial(self.twitter.PostUpdate, status="@%s %s"%(update.user.screen_name, message), in_reply_to_status_id=update.id), self.rand_delay(), False))
 
