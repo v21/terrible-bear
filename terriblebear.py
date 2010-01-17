@@ -45,6 +45,10 @@ import pickle
 from twitter import TwitterError
 import re
 from htmlentitydefs import name2codepoint
+import subprocess
+
+from bearuser import BearUser
+
 import urllib2
 from bearuser import BearUser
 
@@ -145,15 +149,18 @@ class TwitterBot(object):
         self.lastRepliesUpdate = time.gmtime()
         self.lastUpdate = time.gmtime()
         
-        self.user = self.twitter.GetUser(user="terriblebear")
+        self.username = "terriblebear"
+        self.user = self.twitter.GetUser(user=self.username)
 
+        f = None
         try:
             f = file("bearuserdict.pickle")
             self.bearUserDict = load(f)
         except: 
             self.bearUserDict = {}
         finally:
-            f.close()
+            if f is not None:
+                f.close()
 
 
     def start_game_to_v21(self):
@@ -173,6 +180,7 @@ class TwitterBot(object):
             traceback.print_exc(file=sys.stderr)
             return
     def pickle_users(self):     
+        f = None
         try:
             debug("DUMPING USER DICT")
             f = open('bearuserdict.pickle', 'w')
@@ -181,7 +189,8 @@ class TwitterBot(object):
         except :
             pass
         finally:
-            f.close()
+            if f is not None:
+                f.close()
 
     def check_dms(self):
         debug("In check_dms")
@@ -243,7 +252,7 @@ class TwitterBot(object):
             self.sched.add_task(SchedTask(partial(self.twitter.CreateFriendship, user), self.rand_delay(), False))
         
         bear_user = self.bearUserDict[user]
-        message = bear_user.createReply(update.text,{bear_user: bear_user, update:update})
+        message = bear_user.createReply(update.text,{'bear_user': bear_user, 'update':update})
         self.sched.add_task(SchedTask(partial(self.twitter.PostDirectMessage, user, message),self.rand_delay(), False ))
 
     def handle_replies(self, update):
@@ -254,7 +263,7 @@ class TwitterBot(object):
             self.sched.add_task(SchedTask(partial(self.twitter.CreateFriendship, user), 30, False))
         
         bear_user = self.bearUserDict[user]
-        message = bear_user.createReply(update.text,{bear_user: bear_user, update:update})
+        message = bear_user.createReply(update.text,{'bear_user': bear_user, 'update':update})
 
         self.sched.add_task(SchedTask(partial(self.twitter.PostUpdate, status="@%s %s"%(update.user.screen_name, message), in_reply_to_status_id=update.id), self.rand_delay(), False))
 
@@ -269,12 +278,22 @@ class TwitterBot(object):
         if current_mood > 0: current_mood = 0
         if current_mood < -2: current_mood = 0
         imgs = {
-            0: "http://personal.boristhebrave.com/permanent/10/bearangst.jpg",
-            -1: "http://personal.boristhebrave.com/permanent/10/sadbear.jpg",
-            -2: "http://personal.boristhebrave.com/permanent/10/angrybear.jpg",
+            0: "images/bearangst.jpg",
+            -1: "images/sadbear.jpg",
+            -2: "images/angrybear.jpg",
         }
         img = imgs[current_mood]
-        #self.user.SetProfileImageUrl(img)
+        
+        # Cannot be bothered to figure out how to do this inside python..
+        subprocess.call([
+            "curl",
+            "-u",
+            self.username+":"+self.config.get('twitter', 'password'),
+            "-H","Expect:",
+            "-F","image=@"+img+";type=image/png",
+            "http://twitter.com/account/update_profile_image.xml"])
+        
+        self.user.SetProfileImageUrl(img)
         return img
 
     def run(self):

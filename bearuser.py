@@ -27,12 +27,12 @@ class ResponseDict():
                 pass
             
     def formatString(self,s,details):
+        print details
         inserts = {
             'user_name': details["bear_user"].user.name
         }
         def do_replace(match):
             return inserts.get(match.group(1),match.group(0))
-            
         return re.sub(r"{([^}]*)}",do_replace,s)
             
     def getResponse(self,mood,details):
@@ -62,7 +62,6 @@ class BearUser(object):
         self.last_updated = time.time()
         rating = insultdict.INSULT_DICT.rateSentence(sentence)
         self.changeMood(rating/8.0)
-        print self.mood
         return RESPONSES.getResponse(self.mood, details)
 
 def test():
