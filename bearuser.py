@@ -44,6 +44,7 @@ class ResponseDict():
         response=None
         found  = False
         while n < 50:
+            n += 1
             response = self.getResponseUnlimited(mood,details)
             if len(response)<=130:
                 found = True
@@ -79,6 +80,6 @@ class BearUser(object):
 def test():
     class User():
         def __init__(self):
-            self.name="<Your User Name here>"+('a'*50)
+            self.name="<Your User Name here>"+('a'*500)
     b = BearUser(User())
     print RESPONSES.getResponse(1,{'bear_user':b})
