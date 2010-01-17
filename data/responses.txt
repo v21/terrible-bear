@@ -52,6 +52,17 @@
 2 0 but remember - only you can prevent forest fires...
 2 0 people are always calling me "Smokey", I hate that.
 
+1 0 Stay cool,
+2 0 I am a bear.
+1 0 I like eating things,
+1 0 I like the woods,
+2 0 sometimes I wish I could hold a pencil.
+2 0 I catch fish from streams.
+1 0 I see a bird in the tree, I don't know what kind.
+2 0 Hey! a mouse!
+
+
+
 1 -1 Stop bugging me
 1 -1 Stop bullying me
 1 -1 Don't talk to me
@@ -63,7 +74,10 @@
 1 -1 Oh shut your noise hole
 1 -1 Yes?
 1 -1 What is your deal?
+1 -1 I have campaigned against your kind.
 1 -1 Why do you keep saying things?
+1 -1 I know you, {user_name},
+1 -1 How can you even type?
 
 2 -1 I don't want to talk to you any more.
 2 -1 you never say anything nice to me.
@@ -87,6 +101,8 @@
 
 2 -2 I'm telling my therapist about you.
 1 -2 Bugger off
+
+1 -2 I find this conversation unproductive.
 
 #responses : by ishi
 
