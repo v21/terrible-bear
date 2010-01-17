@@ -47,9 +47,10 @@ class InsultDict():
             if rating:
                 rated_words.append(word)
                 ratings.append(scale*rating)
+                scale = 1
         basic_rating = sum(ratings)
         
-        magic_insult = hash(tuple(sorted(word))) % 255
+        magic_insult = hash(tuple(sorted(rated_words))) % 255
         magic_rating = 0
         if magic_insult>230:
             magic_rating = 3
@@ -66,7 +67,11 @@ def test():
     You vile hideous animal.
     I hate you, you are a terrible bear.
     I don't hate you, I detest you.
-    I don't like you"""
+    I don't like you
+    You are useless
+    You are an idiot
+    You are not an idiot
+    You are not not an idiot"""
 
     for sentence in SAMPLES.split("\n")[1:]:
         print sentence

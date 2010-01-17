@@ -49,6 +49,9 @@ import subprocess
 
 from bearuser import BearUser
 
+import urllib2
+from bearuser import BearUser
+
 
 
 
@@ -139,10 +142,9 @@ class TwitterBot(object):
             SchedTask(self.check_dms, 120, True),
             #SchedTask(self.start_game_to_v21, 30, False),
             SchedTask(self.check_replies, 30, True),
-            SchedTask(self.check_mood, 600, True)
-            )
-            )
-            #  SchedTask(self.stay_joined, 120)))
+            SchedTask(self.check_mood, 600, True),
+            ))
+           #  SchedTask(self.stay_joined, 120)))
         self.lastDMsUpdate = time.gmtime()
         self.lastRepliesUpdate = time.gmtime()
         self.lastUpdate = time.gmtime()
@@ -150,7 +152,14 @@ class TwitterBot(object):
         self.username = "terriblebear"
         self.user = self.twitter.GetUser(user=self.username)
 
-        self.bearUserDict = {}
+        try:
+            f = file("bearuserdict.pickle")
+            self.bearUserDict = load(f)
+        except: 
+            self.bearUserDict = {}
+        finally:
+            f.close()
+
 
     def start_game_to_v21(self):
         self.start_game("v21", "you should really generalize this bit")

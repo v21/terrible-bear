@@ -30,7 +30,7 @@
 1 -1 Go away
 1 -1 Stop it
 1 -1 Shove off
-#sorryforusingfuckontheinternet Fuck off
+1 -2 #sorryforusingfuckontheinternet Fuck off
 1 -1 Don't bug me
 1 -1 Oh shut your noise hole
 
