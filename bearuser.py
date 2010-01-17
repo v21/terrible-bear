@@ -23,7 +23,7 @@ class ResponseDict():
             
     def getResponse(self,mood):
         response_list = self.responses[int(round(mood))]
-        return response_list[random.randint(0,len(response_list))]
+        return response_list[random.randint(0,len(response_list)-1)]
     
             
     
