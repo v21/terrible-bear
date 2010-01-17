@@ -21,8 +21,8 @@
 2 1 that means a lot to a bear like me.
 2 1 if I ever see you I promise I'll give you a complimentary head start.
 
-0 1 Hmph..
-0 2 
+1 0 Hmph..
+2 0 {user_name}
 
 1 -1 Stop bugging me
 1 -1 Stop bullying me

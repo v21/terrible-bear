@@ -27,7 +27,13 @@ class ResponseDict():
                 pass
             
     def formatString(self,s,details):
-        return s
+        inserts = {
+            'user_name': details["bear_user"].user.name
+        }
+        def do_replace(match):
+            return inserts.get(match.group(1),match.group(0))
+            
+        return re.sub(r"{([^}]*)}",do_replace,s)
             
     def getResponse(self,mood,details):
         response_list1 = self.responsesByPrefixByMood[1][int(round(mood))]
@@ -58,3 +64,10 @@ class BearUser(object):
         self.changeMood(rating/8.0)
         print self.mood
         return RESPONSES.getResponse(self.mood, details)
+
+def test():
+    class User():
+        def __init__(self):
+            self.name="asdf"
+    b = BearUser(User())
+    print RESPONSES.getResponse(0,{'bear_user':b})
