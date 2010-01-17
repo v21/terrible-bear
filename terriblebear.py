@@ -133,17 +133,19 @@ class TwitterBot(object):
             password=self.config.get('twitter', 'password'))
 
         self.sched = Scheduler(
-           #(SchedTask(self.process_events, 1),
-           (
+            #(SchedTask(self.process_events, 1),
+            (
             SchedTask(self.check_dms, 120, True),
             #SchedTask(self.start_game_to_v21, 30, False),
             SchedTask(self.check_replies, 30, True),
-            #SchedTask(self.check_mood, 600, True),
+            SchedTask(self.check_mood, 600, True),
             ))
            #  SchedTask(self.stay_joined, 120)))
         self.lastDMsUpdate = time.gmtime()
         self.lastRepliesUpdate = time.gmtime()
         self.lastUpdate = time.gmtime()
+        
+        self.user = self.twitter.GetUser(user="terriblebear")
 
         try:
             f = file("bearuserdict.pickle")
@@ -258,6 +260,7 @@ class TwitterBot(object):
 
     def get_current_mood(self):
         moods = [bear_user.mood for bear_user in self.bearUserDict.values()]
+        if len(moods)==0: return 0.0
         return sum(moods)/len(moods)
         
     def check_mood(self):
@@ -271,7 +274,8 @@ class TwitterBot(object):
             -2: "http://personal.boristhebrave.com/permanent/10/angrybear.jpg",
         }
         img = imgs[current_mood]
-        #TODO
+        #self.user.SetProfileImageUrl(img)
+        return img
 
     def run(self):
         while True:
