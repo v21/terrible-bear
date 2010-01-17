@@ -105,7 +105,21 @@ class Scheduler(object):
         while True:
             self.next_task()
 
+class BearUser(object):
+    def __init__(self, user):
+        self.user = user
+        self.mood = 0
+        self.last_updated = time.time()
+    def __repr__(self):
+        return "user %s has made bear have mood %d - last talked at %s" %(self.user, self.mood, self.last_updated)
 
+    def changeMood(self, mood_change):
+        self.mood += mood_change
+        self.last_updated = time.time()
+
+    def createReply(self, keyword):
+        self.last_updated = time.time()
+        print >> sys.stderr , self
 class TwitterBot(object):
     def __init__(self, configFilename):
         self.configFilename = configFilename
@@ -124,9 +138,16 @@ class TwitterBot(object):
         self.lastRepliesUpdate = time.gmtime()
         self.lastUpdate = time.gmtime()
 
+        self.bearUserDict = {}
+
     def start_game_to_v21(self):
         self.start_game("v21", "you should really generalize this bit")
     def start_game(self, follower, message):
+        class update:
+           sender_screen_name = "v21" 
+           text = "i think youre a terrible person"
+
+        self.handle_dm(update)
         try:
             self.twitter.CreateFriendship(follower)
             self.twitter.PostDirectMessage(follower, message)
@@ -137,7 +158,7 @@ class TwitterBot(object):
             return
 
     def check_dms(self):
-        debug("In check_statuses")
+        debug("In check_dms")
         try:
             updates = self.twitter.GetDirectMessages()
         except Exception, e:
@@ -184,12 +205,20 @@ class TwitterBot(object):
 
 
     def handle_dm(self, update):
-        message = "bear is feeling emotional"
-        self.twitter.PostDirectMessage(update.sender_screen_name, message)
+        user = update.sender_screen_name
+
+        if not user in self.bearUserDict:
+            self.bearUserDict[user] = BearUser(user=self.twitter.GetUser(user=user))
+        message = self.bearUserDict[user].createReply(update.text)
+        self.twitter.PostDirectMessage(user, message)
 
     def handle_replies(self, update):
+        user = update.user.screen_name
 
-        message = "bear says hello"
+        if not user in self.bearUserDict:
+            self.bearUserDict[user] = BearUser(user=self.twitter.GetUser(user=user))
+        message = self.bearUserDict[update.user].createReply(update.text)
+
         self.twitter.PostUpdate(status="@%s %s"%(update.user.screen_name, message), in_reply_to_status_id=update.id)
     
     def run(self):
