@@ -135,9 +135,9 @@ class TwitterBot(object):
         self.sched = Scheduler(
             #(SchedTask(self.process_events, 1),
             (
-            SchedTask(self.check_dms, 120, True),
+            SchedTask(self.check_dms, 60, True),
             #SchedTask(self.start_game_to_v21, 30, False),
-            SchedTask(self.check_replies, 30, True),
+            SchedTask(self.check_replies, 60, True),
             SchedTask(self.check_mood, 600, True),
             ))
            #  SchedTask(self.stay_joined, 120)))
@@ -199,7 +199,7 @@ class TwitterBot(object):
                 text = (htmlentitydecode(
                     update.text.replace('\n', ' '))
                     .encode('utf-8', 'replace'))
-                debug("got dm: %s " %(update.text))
+                debug("got dm: %s created at %s (last updated at %s)" %(update.text, crt, self.lastDMsUpdate))
                 self.handle_dm(update)
 
                 nextLastUpdate = crt
