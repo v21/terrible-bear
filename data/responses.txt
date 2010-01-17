@@ -49,7 +49,7 @@
 1 0 Ay!
 2 0 did you get that thing I sent you?
 2 0 what's your thoughts on forest fires?
-2 0 but rememember - only you can prevent forest fires...
+2 0 but remember - only you can prevent forest fires...
 2 0 people are always calling me "Smokey", I hate that.
 
 1 -1 Stop bugging me
@@ -84,12 +84,13 @@
 2 -2 You wanna make something of this? 
 
 1 2 I'm so happy I don't know what to say.
-2 2 
 
 2 -2 I'm telling my therapist about you.
 1 -2 Bugger off
 
-#From Ishi
+#responses : by ishi
+
+1 2 I'm so happy to be alive!
 2 2 Come and fondle my soft fur.
 
 1 1 That's nice of you.
