@@ -41,7 +41,7 @@ import os.path
 import twitter
 from functools import partial
 import random
-
+import pickle
 from twitter import TwitterError
 import re
 from htmlentitydefs import name2codepoint
@@ -107,6 +107,9 @@ class Scheduler(object):
     def wrap_twitter_action(self, action):
         try:
             return action()
+        except urllib2.HTTPError, http_error:
+            if http_error.code == 403:
+                debug("Twitter doesn't want use to do that : "+ str(http_error))
         except Exception, e:
             print >> sys.stderr, e
             action.repeat = False
@@ -163,7 +166,16 @@ class TwitterBot(object):
             print >> sys.stderr, "Exception while querying twitter:"
             traceback.print_exc(file=sys.stderr)
             return
-            
+    def pickle_users(self):     
+        try:
+            debug("DUMPING USER DICT")
+            f = open('bearuserdict.pickle', 'w')
+            pickle.dump(self.bearUserDict, f)
+            debug("DUMPED SUCCESSFULLY")
+        except :
+            pass
+        finally:
+            f.close()
 
     def check_dms(self):
         debug("In check_dms")
@@ -213,12 +225,13 @@ class TwitterBot(object):
                 break
         self.lastRepliesUpdate = nextLastUpdate
     def rand_delay(self):
-        
-        return random.randint(10,60*60)
+        return 1
+        #return random.randint(10,60*60)
 
     def handle_dm(self, update):
         user = update.sender_screen_name
-
+        if update.text == "DUMPBEARUSERS":
+            self.pickle_users()
         if not user in self.bearUserDict:
             self.bearUserDict[user] = BearUser(user=self.twitter.GetUser(user=user))
             self.sched.add_task(SchedTask(partial(self.twitter.CreateFriendship, user), self.rand_delay(), False))
@@ -232,7 +245,7 @@ class TwitterBot(object):
 
         if not user in self.bearUserDict:
             self.bearUserDict[user] = BearUser(user=self.twitter.GetUser(user=user))
-            self.sched.add_task(SchedTask(partial(self.twitter.CreateFriendship, user), self.rand_delay(), False))
+            self.sched.add_task(SchedTask(partial(self.twitter.CreateFriendship, user), 30, False))
         
         bear_user = self.bearUserDict[user]
         message = bear_user.createReply(update.text,{bear_user: bear_user, update:update})
