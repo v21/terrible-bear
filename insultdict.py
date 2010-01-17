@@ -14,7 +14,7 @@ class InsultDict():
         self.log = ""
     def _log(self, text):
         self.log+=text+"\n";
-    def Load(self,filename):
+    def load(self,filename):
         file = open(filename, 'r')
         for line in file:
             try:
@@ -23,7 +23,7 @@ class InsultDict():
             except(ValueError,IndexError):
                 pass
                 
-    def RateWord(self,word):
+    def rateWord(self,word):
         """Rate a single word"""
         if word in self.insults:
             return self.insults[word]
@@ -32,7 +32,7 @@ class InsultDict():
             if subword in self.insults:
                 return self.insults[subword]
                 
-    def RateSentence(self, sentence):
+    def rateSentence(self, sentence):
         """Rate a sentence, by splitting into rateable words"""
         words = re.split(r"[^\w']*",sentence)
         rated_words = []
@@ -43,7 +43,7 @@ class InsultDict():
             if word in NEGATING_WORDS:
                 scale *= -1
                 continue
-            rating = self.RateWord(word)
+            rating = self.rateWord(word)
             if rating:
                 rated_words.append(word)
                 ratings.append(scale*rating)
@@ -61,7 +61,7 @@ class InsultDict():
 def test():
     
     insult_dict = InsultDict()
-    insult_dict.Load(EMOTION_TABLE)
+    insult_dict.load(EMOTION_TABLE)
 
     SAMPLES="""
     You vile hideous animal.
