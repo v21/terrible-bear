@@ -132,9 +132,10 @@ class TwitterBot(object):
     def __init__(self, configFilename):
         self.configFilename = configFilename
         self.config = load_config(self.configFilename)
-        self.twitter = twitter.Api(
-            username=self.config.get('twitter', 'email'),
-            password=self.config.get('twitter', 'password'))
+        self.twitter = twitter.Api(consumer_key=self.config.get('twitter','consumer_key'),
+            consumer_secret=self.config.get('twitter','consumer_secret'), 
+            access_token_key=self.config.get('twitter','access_token'), 
+            access_token_secret=self.config.get('twitter','access_token_secret'))        
 
         self.sched = Scheduler(
             #(SchedTask(self.process_events, 1),
@@ -142,7 +143,8 @@ class TwitterBot(object):
             SchedTask(self.check_dms, 60, True),
             #SchedTask(self.start_game_to_v21, 30, False),
             SchedTask(self.check_replies, 60, True),
-            SchedTask(self.check_mood, 600, True),
+            SchedTask(self.pickle_users, 600, True),
+            #SchedTask(self.check_mood, 600, True), #a bit spammy, and we haven't got the profile pic chaning working again
             ))
            #  SchedTask(self.stay_joined, 120)))
         self.lastDMsUpdate = time.gmtime()
@@ -220,6 +222,7 @@ class TwitterBot(object):
 
     def check_replies(self):
         debug("In check_replies")
+        debug("oldest reply: %s" % (self.lastRepliesUpdate))
         try:
             updates = self.twitter.GetReplies()
         except Exception, e:
@@ -234,7 +237,7 @@ class TwitterBot(object):
                 text = (htmlentitydecode(
                     update.text.replace('\n', ' '))
                     .encode('utf-8', 'replace'))
-                debug("got reply: %s" %(update.text))
+                debug("got reply: %s at %s" % (update.text, crt))
                 nextLastUpdate = crt
                 self.handle_replies(update)
 
@@ -280,11 +283,11 @@ class TwitterBot(object):
         if current_mood > 2: current_mood = 2
         if current_mood < -2: current_mood = -2
         imgs = {
-            2: "images/creepybear.jpg"
+            2: "images/creepybear.jpg",
             1: "images/happybear.jpg",
             0: "images/bearangst.jpg",
             -1: "images/sadbear.jpg",
-            -2: "images/angrybear.jpg",
+            -2: "images/angrybear.jpg"
         }
         img = imgs[current_mood]
         
@@ -331,9 +334,6 @@ def load_config(filename):
     cp = SafeConfigParser(defaults)
     cp.read((filename,))
     
-    # attempt to read these properties-- they are required
-    cp.get('twitter', 'email'),
-    cp.get('twitter', 'password')
     try:
         global debug_flag
         debug_flag = cp.getboolean('debug', 'debug')
