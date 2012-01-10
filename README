@@ -1,0 +1,10 @@
+How to configure your own terrible bear:
+
+-- Set up virtualenv, climb into it
+-- pip install python-dateutil==1.5
+-- pip install python-twitter
+-- clone this repo
+-- set up a twitter application here : https://dev.twitter.com/apps
+-- run get_access_token.py with the app tokens set up
+-- get your consumer tokens and you app token, put 'em in twitterbot.ini
+-- run terriblebear.py - it should stay up, check twitter and respond appropriately.
