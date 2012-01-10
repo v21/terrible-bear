@@ -238,7 +238,8 @@ class TwitterBot(object):
                     update.text.replace('\n', ' '))
                     .encode('utf-8', 'replace'))
                 debug("got reply: %s at %s" % (update.text, crt))
-                nextLastUpdate = crt
+                if (crt > nextLastUpdate):
+                    nextLastUpdate = crt
                 self.handle_replies(update)
 
             else:
