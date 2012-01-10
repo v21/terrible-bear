@@ -8,3 +8,10 @@ How to configure your own terrible bear:
 -- run get_access_token.py with the app tokens set up
 -- get your consumer tokens and you app token, put 'em in twitterbot.ini
 -- run terriblebear.py - it should stay up, check twitter and respond appropriately.
+
+To do :
+
+-- get him chaning profile pics agains, depending on his mood
+-- rework how his mood changes
+-- change what he says to the world
+
